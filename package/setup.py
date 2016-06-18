@@ -38,7 +38,7 @@ os.chdir(os.path.dirname(os.path.abspath(__file__)))
 try:
 	setup(
 		name = "Yapsy",
-		version = __import__("yapsy").__version__+"-pythons2n3",
+		version = __import__("yapsy").__version__,
 		packages = ['yapsy'],
 		package_dir = {'yapsy':'yapsy'},
 		
@@ -59,6 +59,8 @@ try:
 					 'License :: OSI Approved :: BSD License',
 					 'Operating System :: OS Independent',
 					 'Programming Language :: Python',
+					 'Programming Language :: Python :: 2',
+					 'Programming Language :: Python :: 3',
 					 'Topic :: Software Development :: Libraries :: Python Modules'],
 		platforms='All',
 		)

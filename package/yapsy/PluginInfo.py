@@ -1,4 +1,3 @@
-#!/usr/bin/python
 # -*- coding: utf-8; tab-width: 4; indent-tabs-mode: t; python-indent: 4 -*-
 
 
@@ -12,13 +11,12 @@ API
 ===
 """
 
-from ConfigParser import ConfigParser
+from yapsy.compat import ConfigParser
 from distutils.version import StrictVersion
 
 
 class PluginInfo(object):
-	"""
-	Representation of the most basic set of information related to a
+	"""Representation of the most basic set of information related to a
 	given plugin such as its name, author, description...
 
 	Any additional information can be stored ad retrieved in a
@@ -30,13 +28,15 @@ class PluginInfo(object):
 	not part of the basic variables (name, path, version etc), can
 	still be accessed though the ``details`` member variables that
 	behaves like Python's ``ConfigParser.ConfigParser``.
-	"""
-	
-	def __init__(self, plugin_name, plugin_path):
-		"""
-		Set the basic information (at least name and path) about the
-		plugin as well as the default values for other usefull
-		variables.
+
+	Warning: the instance associated with the ``details`` member
+	variable is never copied and used to store all plugin infos. If
+	you set it to a custom instance, it will be modified as soon as
+	another member variale of the plugin info is
+	changed. Alternatively, if you change the instance "outside" the
+	plugin info, it will also change the plugin info.
+
+	Ctor Arguments:
 
 		*plugin_name* is  a simple string describing the name of
          the plugin.
@@ -44,13 +44,15 @@ class PluginInfo(object):
 		*plugin_path* describe the location where the plugin can be
          found.
 		
-		.. warning:: The ``path`` attribute is the full path to the
-		             plugin if it is organised as a directory or the
-		             full path to a file without the ``.py`` extension
-		             if the plugin is defined by a simple file. In the
-		             later case, the actual plugin is reached via
-		             ``plugin_info.path+'.py'``.
-		"""
+	.. warning:: The ``path`` attribute is the full path to the
+	             plugin if it is organised as a directory or the
+	             full path to a file without the ``.py`` extension
+	             if the plugin is defined by a simple file. In the
+	             later case, the actual plugin is reached via
+	             ``plugin_info.path+'.py'``.
+	"""
+	
+	def __init__(self, plugin_name, plugin_path):
 		self.__details = ConfigParser()
 		self.name = plugin_name
 		self.path = plugin_path
@@ -116,7 +118,7 @@ class PluginInfo(object):
 		self.details.set("Documentation","Version",vstring)
 
 	def __getAuthor(self):
-		self.details.get("Documentation","Author")
+		return self.details.get("Documentation","Author")
 		
 	def __setAuthor(self,author):
 		if not self.details.has_section("Documentation"):
@@ -125,7 +127,7 @@ class PluginInfo(object):
 
 
 	def __getCopyright(self):
-		self.details.get("Documentation","Copyright")
+		return self.details.get("Documentation","Copyright")
 		
 	def __setCopyright(self,copyrightTxt):
 		if not self.details.has_section("Documentation"):
@@ -134,7 +136,7 @@ class PluginInfo(object):
 
 	
 	def __getWebsite(self):
-		self.details.get("Documentation","Website")
+		return self.details.get("Documentation","Website")
 		
 	def __setWebsite(self,website):
 		if not self.details.has_section("Documentation"):
@@ -179,7 +181,7 @@ class PluginInfo(object):
 	website = property(fget=__getWebsite,fset=__setWebsite)
 	description = property(fget=__getDescription,fset=__setDescription)
 	details = property(fget=__getDetails,fset=__setDetails)
-	# deprecated (>1.9): plugins are not longer assocaited to a
+	# deprecated (>1.9): plugins are not longer associated to a
 	# single category !
 	category = property(fget=__getCategory,fset=__setCategory)
 	
@@ -199,7 +201,7 @@ class PluginInfo(object):
 		if not self.details.has_option("Documentation","Author"):
 			self.author		= "Unknown"
 		if not self.details.has_option("Documentation","Version"):
-			self.version	= "?.?"
+			self.version	= "0.0"
 		if not self.details.has_option("Documentation","Website"):
 			self.website	= "None"
 		if not self.details.has_option("Documentation","Copyright"):

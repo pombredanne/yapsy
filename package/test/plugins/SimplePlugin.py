@@ -1,14 +1,10 @@
-#!/usr/bin/python
-# -*- coding: utf-8 -*-
-
+# -*- coding: utf-8; tab-width: 4; indent-tabs-mode: t; python-indent: 4 -*-
 
 
 """
 This is certainly the second simplest plugin ever.
 """
 
-import test_settings
-import main
 from yapsy.IPlugin import IPlugin
 
 class SimplePlugin(IPlugin):

@@ -1,8 +1,7 @@
-#!/usr/bin/python
 # -*- coding: utf-8; tab-width: 4; indent-tabs-mode: t; python-indent: 4 -*-
 
-import test_settings
-from test_settings import TEST_MESSAGE
+from . import test_settings
+from .test_settings import TEST_MESSAGE
 import unittest
 import os 
 import re
@@ -56,7 +55,7 @@ class FilteredTestsCase(unittest.TestCase):
 		for plugin_info in plugins:
 			TEST_MESSAGE("plugin info: %s" % plugin_info)
 			self.plugin_info = plugin_info	
-			self.assert_(self.plugin_info)
+			self.assertTrue(self.plugin_info)
 			self.assertEqual(self.plugin_info.name,"Simple Plugin")
 			self.assertEqual(sole_category,self.plugin_info.category)
 
@@ -72,12 +71,12 @@ class FilteredTestsCase(unittest.TestCase):
 		Test if the activation procedure works.
 		"""
 		self.plugin_loading_check()
-		self.assert_(not self.plugin_info.plugin_object.is_activated)
+		self.assertTrue(not self.plugin_info.plugin_object.is_activated)
 		TEST_MESSAGE("plugin object = %s" % self.plugin_info.plugin_object)
 		self.plugin_info.plugin_object.activate()
-		self.assert_(self.plugin_info.plugin_object.is_activated)
+		self.assertTrue(self.plugin_info.plugin_object.is_activated)
 		self.plugin_info.plugin_object.deactivate()
-		self.assert_(not self.plugin_info.plugin_object.is_activated)	
+		self.assertTrue(not self.plugin_info.plugin_object.is_activated)	
 
 
 	def testRejectedList(self):
@@ -127,7 +126,7 @@ class FilteredTestsCase(unittest.TestCase):
 		#Remove the rejected plugins into out own list.
 		for plugin in rejected:
 			 self.filteredPluginManager.removePluginCandidate(plugin)
-		self.assertEquals(len(self.filteredPluginManager.getRejectedPlugins()),0)
+		self.assertEqual(len(self.filteredPluginManager.getRejectedPlugins()),0)
 
 		##Now Actually test Append.
 		for plugin in rejected:
@@ -146,7 +145,7 @@ class FilteredTestsCase(unittest.TestCase):
 		#Remove the rejected plugins again.
 		for plugin in rejected:
 			 self.filteredPluginManager.removePluginCandidate(plugin)
-		self.assertEquals(len(self.filteredPluginManager.getRejectedPlugins()),0)
+		self.assertEqual(len(self.filteredPluginManager.getRejectedPlugins()),0)
 
 		for plugin in rejected:
 			 #change the name so it is acceptable.
@@ -207,7 +206,7 @@ class FilteredWithMonkeyPathTestsCase(unittest.TestCase):
 		for plugin_info in plugins:
 			TEST_MESSAGE("plugin info: %s" % plugin_info)
 			self.plugin_info = plugin_info	
-			self.assert_(self.plugin_info)
+			self.assertTrue(self.plugin_info)
 			self.assertEqual(self.plugin_info.name,"Simple Plugin")
 			self.assertEqual(sole_category,self.plugin_info.category)
 
@@ -223,12 +222,12 @@ class FilteredWithMonkeyPathTestsCase(unittest.TestCase):
 		Test if the activation procedure works.
 		"""
 		self.plugin_loading_check()
-		self.assert_(not self.plugin_info.plugin_object.is_activated)
+		self.assertTrue(not self.plugin_info.plugin_object.is_activated)
 		TEST_MESSAGE("plugin object = %s" % self.plugin_info.plugin_object)
 		self.plugin_info.plugin_object.activate()
-		self.assert_(self.plugin_info.plugin_object.is_activated)
+		self.assertTrue(self.plugin_info.plugin_object.is_activated)
 		self.plugin_info.plugin_object.deactivate()
-		self.assert_(not self.plugin_info.plugin_object.is_activated)	
+		self.assertTrue(not self.plugin_info.plugin_object.is_activated)	
 
 
 	def testRejectedList(self):

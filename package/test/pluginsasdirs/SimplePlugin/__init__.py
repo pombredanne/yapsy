@@ -1,15 +1,12 @@
 # -*- coding: utf-8; tab-width: 4; indent-tabs-mode: t; python-indent: 4 -*-
 
-
 """
 This is certainly the second simplest plugin ever.
 """
 
 from yapsy.IPlugin import IPlugin
 
-from import_error import the_error_is_here
-
-class ErrorenousPlugin(IPlugin):
+class SimplePlugin(IPlugin):
 	"""
 	Only trigger the expected test results.
 	"""

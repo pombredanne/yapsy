@@ -162,7 +162,7 @@ project but it is now used in other (more advanced) projects like:
 .. _MathBench: http://mathbench.sourceforge.net
 .. _peppy: http://www.flipturn.org/peppy/
 .. _MysteryMachine: http://trac.backslashat.org/MysteryMachine
-.. _Aranduka: http://code.google.com/p/aranduka/
+.. _Aranduka: https://github.com/ralsina/aranduka
 .. _err: http://gbin.github.com/err/
 .. _nikola: http://nikola.ralsina.com.ar/
 
@@ -175,9 +175,9 @@ If you're interested in using yapsy, feel free to look into the following links:
 - `Making your app modular: Yapsy`_ (applied to Qt apps)
 - `Python plugins with yapsy`_ (applied to GTK apps)
 
-.. _`Making your app modular: Yapsy`: http://lateral.netmanagers.com.ar/weblog/posts/BB923.html
+.. _`Making your app modular: Yapsy`: http://ralsina.me/weblog/posts/BB923.html
 .. _`A minimal example on stackoverflow`: http://stackoverflow.com/questions/5333128/yapsy-minimal-example
-.. _`Python plugins with yapsy`: http://www.micahcarrick.com/python-gtk-plugins-with-yapsy.html
+.. _`Python plugins with yapsy`: https://github.com/MicahCarrick/yapsy-gtk-example
 
 
 Development
@@ -231,23 +231,30 @@ The project is hosted by `Sourceforge`_ where you can access the code, documenta
 **Any suggestion and help are much welcome !**
 
 Yapsy is also tested on the continous integration service `TravisCI`_:
-  * with Python-2.x: |TravisPy2|
-  * with Python-3.x: |TravisPy3|
+|CITests| |Coverage|
 
 .. _`TravisCI`: https://travis-ci.org/tibonihoo/yapsy
-.. |TravisPy2| image:: https://travis-ci.org/tibonihoo/yapsy.png?branch=master
-                     :alt: Tests with Python2
-.. |TravisPy3| image:: https://travis-ci.org/tibonihoo/yapsy.png?branch=python3
-                     :alt: Tests with Python3
+.. |CITests| image:: https://travis-ci.org/tibonihoo/yapsy.png?branch=master
+             :alt: Continuous integration tests
+.. |Coverage| image:: https://coveralls.io/repos/tibonihoo/yapsy/badge.png?branch=master
+              :alt: Code coverage from continuous integration tests.
+              :target: https://coveralls.io/r/tibonihoo/yapsy?branch=master
 
-And if you're looking for the development version of the
-documentation, it is continuously updated on `ReadTheDoc`_.
+A few alternative sites are available:
 
-.. _`ReadTheDoc`: https://yapsy.readthedocs.org
+  * Yapsy's sources are mirrored on `GitHub`_.
 
-Last but not least, Yapsy's sources are mirrored on `GitHub`_.
+  * To use `pip for a development install`_ you can do something like::
+
+       pip install -e "git+https://github.com/tibonihoo/yapsy.git#egg=yapsy&subdirectory=package"
+       pip install -e "hg+http://hg.code.sf.net/p/yapsy/code#egg=yapsy&subdirectory=package"
+
+  * A development version of the documentation is available on `ReadTheDoc`_.
+
 
 .. _`GitHub`: https://github.com/tibonihoo/yapsy/
+.. _`pip for a development install`: http://pip.readthedocs.org/en/latest/reference/pip_install.html#vcs-support
+.. _`ReadTheDoc`: https://yapsy.readthedocs.org
 
 
 
@@ -278,7 +285,7 @@ plugin system should look like, I wanted to implement my own
   depends on zope which considered what I want to do here is way too
   much.
 
-.. _PlugBoard: http://developer.berlios.de/projects/plugboard/ 
+.. _PlugBoard: https://pypi.python.org/pypi/PlugBoard
 
 - `Marty Alchin's simple plugin framework`_ is a quite interesting
   description of a plugin architecture with code snippets as
@@ -289,11 +296,7 @@ plugin system should look like, I wanted to implement my own
 - stevedor_ looks quite promising and actually seems to make
   setuptools relevant to build plugin systems.
 
-.. _stevedor: http://stevedore.readthedocs.org
-
-- `Evan Fosmark's A simple event-driven plugin system in Python`_ where "plugins are just functions that get registered through the use of a decorator". 
-
-.. _`Evan Fosmark's A simple event-driven plugin system in Python`: http://www.evanfosmark.com/2009/07/simple-event-driven-plugin-system-in-python/
+.. _stevedor: https://pypi.python.org/pypi/stevedore
 
 - You can look up more example on a `stackoverflow's discution about minimal plugin systems in Python`_
 

@@ -1,8 +1,10 @@
 include README.txt
 include LICENSE.txt
 include CHANGELOG.txt
+include runtests.py
 
 recursive-include test *.py *-plugin *.zip
+recursive-include yapsy *.py
 
 recursive-include artwork *
 recursive-include doc *

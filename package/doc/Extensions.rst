@@ -13,6 +13,7 @@ functionality you need for your plugin manager:
    ConfigurablePluginManager
    AutoInstallPluginManager
    FilteredPluginManager
+   MultiprocessPluginManager
 
 
 The following item offer customization for the way plugins are
@@ -32,3 +33,13 @@ interfaces:
 
    IPluginLocator
    PluginManagerDecorator
+
+If you want to isolate your plugins in separate processes with the
+``MultiprocessPluginManager``, you should look at the following
+classes too:
+
+.. toctree::
+   :maxdepth: 1
+
+   IMultiprocessChildPlugin
+   MultiprocessPluginProxy

@@ -1,15 +1,31 @@
-#!/usr/bin/python
 # -*- coding: utf-8; tab-width: 4; indent-tabs-mode: t; python-indent: 4 -*-
 
-import test_settings
+from . import test_settings
 import unittest
 import os 
 
 from yapsy.PluginManager import PluginManager
 from yapsy.IPlugin import IPlugin
 from yapsy.PluginFileLocator import PluginFileLocator
+from yapsy import NormalizePluginNameForModuleName
 
-class SimpleTestsCase(unittest.TestCase):
+class YapsyUtils(unittest.TestCase):
+
+	def test_NormalizePluginNameForModuleName_on_ok_name(self):
+		self.assertEqual("moufGlop2",NormalizePluginNameForModuleName("moufGlop2"))
+
+	def test_NormalizePluginNameForModuleName_on_empty_name(self):
+		self.assertEqual("_",NormalizePluginNameForModuleName(""))
+		
+	def test_NormalizePluginNameForModuleName_on_name_with_space(self):
+		self.assertEqual("mouf_glop",NormalizePluginNameForModuleName("mouf glop"))
+
+	def test_NormalizePluginNameForModuleName_on_name_with_nonalphanum(self):
+		self.assertEqual("mouf__glop_a_é",NormalizePluginNameForModuleName("mouf+?glop:a/é"))
+
+
+		
+class SimpleTestCase(unittest.TestCase):
 	"""
 	Test the correct loading of a simple plugin as well as basic
 	commands.
@@ -43,7 +59,7 @@ class SimpleTestsCase(unittest.TestCase):
 			self.assertEqual(self.plugin_info.name,"Simple Plugin")
 			self.assertEqual(sole_category,self.plugin_info.category)
 		else:
-			self.assert_(True)
+			self.assertTrue(True)
 
 	def testLoaded(self):
 		"""
@@ -65,13 +81,13 @@ class SimpleTestsCase(unittest.TestCase):
 		Test if the activation procedure works.
 		"""
 		self.plugin_loading_check()
-		self.assert_(not self.plugin_info.plugin_object.is_activated)
+		self.assertTrue(not self.plugin_info.plugin_object.is_activated)
 		self.simplePluginManager.activatePluginByName(self.plugin_info.name,
 													  self.plugin_info.category)
-		self.assert_(self.plugin_info.plugin_object.is_activated)
+		self.assertTrue(self.plugin_info.plugin_object.is_activated)
 		self.simplePluginManager.deactivatePluginByName(self.plugin_info.name,
 														self.plugin_info.category)
-		self.assert_(not self.plugin_info.plugin_object.is_activated)
+		self.assertTrue(not self.plugin_info.plugin_object.is_activated)
 
 
 class SimplePluginAdvancedManipulationTestsCase(unittest.TestCase):
@@ -102,6 +118,29 @@ class SimplePluginAdvancedManipulationTestsCase(unittest.TestCase):
 		spm.appendPluginToCategory(plugin_info,sole_category)
 		self.assertEqual(len(spm.getPluginsOfCategory(sole_category)),1)
 
+	
+	def testChangingCategoriesFilter(self):
+		"""
+		Test the effect of setting a new category filer.
+		"""
+		spm = PluginManager(directories_list=[
+				os.path.join(
+					os.path.dirname(os.path.abspath(__file__)),"plugins")])
+		# load the plugins that may be found
+		spm.collectPlugins()
+		newCategory = "Mouf"
+		# Pre-requisite for the test
+		previousCategories = spm.getCategories()
+		self.assertTrue(len(previousCategories) >= 1)
+		self.assertTrue(newCategory not in previousCategories)
+		# change the category and see what's happening
+		spm.setCategoriesFilter({newCategory: IPlugin})
+		spm.collectPlugins()
+		for categoryName in previousCategories:
+			self.assertRaises(KeyError, spm.getPluginsOfCategory, categoryName)
+		self.assertTrue(len(spm.getPluginsOfCategory(newCategory)) >= 1)
+	
+		
 	def testCandidatesManipulation(self):
 		"""
 		Test querying, removing and adding plugins from/to the lkist
@@ -226,9 +265,9 @@ class SimplePluginDetectionTestsCase(unittest.TestCase):
 		self.assertEqual(len(spm.getCategories()),1)
 		sole_category = spm.getCategories()[0]
 		# check the getPluginsOfCategory
-		self.assertEqual(len(spm.getPluginsOfCategory(sole_category)),1)
+		self.assertEqual(len(spm.getPluginsOfCategory(sole_category)),2)
 
-	def testNonRecursivePluginlocationNotFound(self):
+	def testDisablingRecursivePluginLocationIsEnforced(self):
 		"""
 		Test detection of plugins when the detection is non recursive.
 		Here we test that it cannot look into subdirectories of the
@@ -248,8 +287,8 @@ class SimplePluginDetectionTestsCase(unittest.TestCase):
 		# check the getPluginsOfCategory
 		self.assertEqual(len(spm.getPluginsOfCategory(sole_category)),0)
 
-
-	def testNonRecursivePluginlocationNotFound(self):
+	
+	def testDisablingRecursivePluginLocationAllowsFindingTopLevelPlugins(self):
 		"""
 		Test detection of plugins when the detection is non
 		recursive. Here we test that if we give test/plugin as the
@@ -272,7 +311,8 @@ class SimplePluginDetectionTestsCase(unittest.TestCase):
 
 		
 suite = unittest.TestSuite([
-		unittest.TestLoader().loadTestsFromTestCase(SimpleTestsCase),
+		unittest.TestLoader().loadTestsFromTestCase(YapsyUtils),
+		unittest.TestLoader().loadTestsFromTestCase(SimpleTestCase),
 		unittest.TestLoader().loadTestsFromTestCase(SimplePluginAdvancedManipulationTestsCase),
 		unittest.TestLoader().loadTestsFromTestCase(SimplePluginDetectionTestsCase),
 		])
